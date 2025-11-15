@@ -44,12 +44,12 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Título con fondo del mismo color que el gráfico (morado suave)
+# Título con fondo morado sólido tipo WOM
 st.markdown(
     """
-    <div style="background-color:#c65bff;
-                padding-top:12px;
-                padding-bottom:12px;
+    <div style="background-color:#b000b9;
+                padding-top:14px;
+                padding-bottom:14px;
                 border-radius:12px;
                 margin-bottom:10px;">
         <h1 style="color:white;
@@ -94,18 +94,19 @@ actividades = [
 st.markdown("### 📝 Nuevo registro")
 
 with st.form("registro_gestiones"):
-    col1, col2 = st.columns(2)
 
-    # Fila 1
-    with col1:
+    # Fila 1: Fecha / Gestor
+    fila1_col1, fila1_col2 = st.columns(2)
+    with fila1_col1:
         fecha = st.date_input("Fecha", value=date.today())
-    with col2:
-        sitio = st.text_input("Código Subtel")
-
-    # Fila 2
-    with col1:
+    with fila1_col2:
         gestor = st.selectbox("Gestor", gestores)
-    with col2:
+
+    # Fila 2: Código Subtel / Actividad
+    fila2_col1, fila2_col2 = st.columns(2)
+    with fila2_col1:
+        sitio = st.text_input("Código Subtel")
+    with fila2_col2:
         actividad = st.selectbox("Actividad realizada", actividades)
 
     enviado = st.form_submit_button("✅ Guardar gestión")
@@ -150,16 +151,15 @@ else:
         actividad_counts["Cantidad"] / actividad_counts["Cantidad"].sum() * 100
     ).round(0).astype(int)   # sin decimales
 
-    # Tabla simple, sin símbolo % aparte
     st.dataframe(actividad_counts, use_container_width=True)
 
-    # Gráfico de barras en morado suave, puntas redondeadas
+    # Gráfico de barras en mismo morado del banner, puntas redondeadas
     chart = (
         alt.Chart(actividad_counts)
         .mark_bar(
             cornerRadiusTopLeft=6,
             cornerRadiusTopRight=6,
-            color="#c65bff"   # mismo color que el fondo del título
+            color="#b000b9"
         )
         .encode(
             x=alt.X("Actividad:N", sort="-y", title="Actividad"),
