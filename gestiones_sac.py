@@ -37,16 +37,33 @@ st.markdown(
     """
     <style>
     .stApp {background-color: #f9f5ff;}
-    h1, h2, h3 {text-align: center; color: #2d004d;}
+    h2, h3 {text-align: center; color: #2d004d;}
     .block-container {padding-top: 2rem; padding-bottom: 2rem;}
     </style>
     """,
     unsafe_allow_html=True
 )
 
-st.markdown("<h1>GESTIONES SAC</h1>", unsafe_allow_html=True)
+# Título con fondo del mismo color que el gráfico (morado suave)
+st.markdown(
+    """
+    <div style="background-color:#c65bff;
+                padding-top:12px;
+                padding-bottom:12px;
+                border-radius:12px;
+                margin-bottom:10px;">
+        <h1 style="color:white;
+                   text-align:center;
+                   margin:0;
+                   letter-spacing:2px;">
+            GESTIONES SAC
+        </h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-st.markdown("----")
+st.markdown("---")
 
 # ==============================
 # LISTAS DESPLEGABLES
@@ -79,20 +96,23 @@ st.markdown("### 📝 Nuevo registro")
 with st.form("registro_gestiones"):
     col1, col2 = st.columns(2)
 
+    # Fila 1
     with col1:
         fecha = st.date_input("Fecha", value=date.today())
-        gestor = st.selectbox("Gestor", gestores)
-
     with col2:
         sitio = st.text_input("Código Subtel")
 
-    actividad = st.selectbox("Actividad realizada", actividades)
+    # Fila 2
+    with col1:
+        gestor = st.selectbox("Gestor", gestores)
+    with col2:
+        actividad = st.selectbox("Actividad realizada", actividades)
 
     enviado = st.form_submit_button("✅ Guardar gestión")
 
     if enviado:
         if not sitio.strip():
-            st.error("❌ Debes ingresar el nombre del sitio.")
+            st.error("❌ Debes ingresar el Código Subtel.")
         else:
             nueva_fila = [
                 str(fecha),
@@ -130,25 +150,16 @@ else:
         actividad_counts["Cantidad"] / actividad_counts["Cantidad"].sum() * 100
     ).round(0).astype(int)   # sin decimales
 
-    # Tabla + ícono de porcentaje a la derecha
-    col_tabla, col_icono = st.columns([0.93, 0.07])
+    # Tabla simple, sin símbolo % aparte
+    st.dataframe(actividad_counts, use_container_width=True)
 
-    with col_tabla:
-        st.dataframe(actividad_counts, use_container_width=True)
-
-    with col_icono:
-        st.markdown(
-            "<div style='text-align:center; font-size:32px; color:#d1006f;'>%</div>",
-            unsafe_allow_html=True
-        )
-
-    # Gráfico de barras en morado WOM con puntas redondeadas
+    # Gráfico de barras en morado suave, puntas redondeadas
     chart = (
         alt.Chart(actividad_counts)
         .mark_bar(
             cornerRadiusTopLeft=6,
             cornerRadiusTopRight=6,
-            color="#b000b9"   # morado tipo WOM
+            color="#c65bff"   # mismo color que el fondo del título
         )
         .encode(
             x=alt.X("Actividad:N", sort="-y", title="Actividad"),
@@ -159,4 +170,3 @@ else:
     )
 
     st.altair_chart(chart, use_container_width=True)
-
