@@ -79,12 +79,12 @@ actividades = [
     "BÚSQUEDA DE ALTERNATIVAS",
     "TSS",
     "FIRMA DE DOCUMENTO",
-    "PROCURACIÓN - GESTIÓN DOCUMENTAL",
+    "PROCURACIÓN",
     "INGRESO DOM",
     "REUNIÓN CON PROPIETARIO",
     "ENERGÍA PROVISORIA",
     "SERVIDUMBRE",
-    "GESTIONES VARIAS - APOYO A OTRAS ÁREAS"
+    "APOYO A OTRAS ÁREAS"
 ]
 
 # ==============================
