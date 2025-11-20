@@ -47,7 +47,7 @@ st.markdown(
 # Título con fondo morado sólido tipo WOM
 st.markdown(
     """
-    <div style="background-color:#b000b9;
+    <div style="background-color:#5700A5;
                 padding-top:14px;
                 padding-bottom:14px;
                 border-radius:12px;
@@ -72,19 +72,19 @@ st.markdown("---")
 gestores = [
     "Hernán Aguilera", "Ignacio Basaure", "Francisco Barrios", "Felipe Camus",
     "Rodrigo Escandón", "Osvaldo Espinoza", "Juan Pablo Molina",
-    "Marilin López", "Francisco Parra", "Roberto Severino",
-    "Manuel Araus", "Christian Cifuentes", "Guillermo Angermeyer"
+    "Marilin López", "Francisco Parra", "Andrea Collao"
 ]
 
 actividades = [
     "BÚSQUEDA DE ALTERNATIVAS",
     "TSS",
     "FIRMA DE DOCUMENTO",
-    "PROCURACIÓN",
+    "PROCURACIÓN - GESTIÓN DOCUMENTAL",
+    "INGRESO DOM",
     "REUNIÓN CON PROPIETARIO",
     "ENERGÍA PROVISORIA",
     "SERVIDUMBRE",
-    "GESTIONES VARIAS"
+    "GESTIONES VARIAS - APOYO A OTRAS ÁREAS"
 ]
 
 # ==============================
@@ -159,7 +159,7 @@ else:
         .mark_bar(
             cornerRadiusTopLeft=6,
             cornerRadiusTopRight=6,
-            color="#b000b9"
+            color="#5700A5"
         )
         .encode(
             x=alt.X("Actividad:N", sort="-y", title="Actividad"),
