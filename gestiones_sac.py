@@ -149,24 +149,52 @@ else:
     actividad_counts.columns = ["Actividad", "Cantidad"]
     actividad_counts["Porcentaje"] = (
         actividad_counts["Cantidad"] / actividad_counts["Cantidad"].sum() * 100
-    ).round(0).astype(int)   # sin decimales
+    ).round(0).astype(int)
 
     st.dataframe(actividad_counts, use_container_width=True)
 
-    # Gráfico de barras en mismo morado del banner, puntas redondeadas
+    # Orden explícito (mayor a menor) para que SIEMPRE quede bien
+    orden_actividades = actividad_counts.sort_values("Cantidad", ascending=False)["Actividad"].tolist()
+
     chart = (
         alt.Chart(actividad_counts)
         .mark_bar(
-            cornerRadiusTopLeft=6,
             cornerRadiusTopRight=6,
+            cornerRadiusBottomRight=6,
             color="#5700A5"
         )
         .encode(
-            x=alt.X("Actividad:N", sort="-y", title="Actividad"),
-            y=alt.Y("Porcentaje:Q", title="Porcentaje (%)"),
-            tooltip=["Actividad", "Cantidad", "Porcentaje"]
+            y=alt.Y("Actividad:N", sort=orden_actividades, title="Actividad"),
+            x=alt.X("Cantidad:Q", title="Cantidad"),
+            tooltip=[
+                alt.Tooltip("Actividad:N"),
+                alt.Tooltip("Cantidad:Q"),
+                alt.Tooltip("Porcentaje:Q", title="Porcentaje (%)")
+            ]
         )
-        .properties(height=380)
+        .properties(height=max(320, 28 * len(actividad_counts)))  # altura dinámica según items
     )
 
-    st.altair_chart(chart, use_container_width=True)
+    # Etiqueta de % al final de cada barra
+    labels = (
+        alt.Chart(actividad_counts)
+        .mark_text(align="left", baseline="middle", dx=6, fontSize=12, color="#2d004d")
+        .encode(
+            y=alt.Y("Actividad:N", sort=orden_actividades),
+            x=alt.X("Cantidad:Q"),
+            text=alt.Text("Porcentaje:Q", format=".0f")
+        )
+    )
+
+    # Estilo "pro"
+    final_chart = (
+        (chart + labels)
+        .configure_axis(
+            labelFontSize=12,
+            titleFontSize=12,
+            grid=False
+        )
+        .configure_view(strokeWidth=0)
+    )
+
+    st.altair_chart(final_chart, use_container_width=True)
