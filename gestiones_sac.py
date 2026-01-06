@@ -165,7 +165,15 @@ else:
         )
         .encode(
             y=alt.Y("Actividad:N", sort=orden_actividades, title="Actividad"),
-            x=alt.X("Cantidad:Q", title="Cantidad"),
+            x=alt.X(
+    "Cantidad:Q",
+    title="Cantidad",
+    axis=alt.Axis(
+        tickMinStep=1,
+        format="d",
+        grid=False
+    )
+),
             tooltip=[
                 alt.Tooltip("Actividad:N"),
                 alt.Tooltip("Cantidad:Q"),
